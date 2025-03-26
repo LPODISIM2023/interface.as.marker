@@ -2,6 +2,7 @@ package interfaces;
 
 //Java program to illustrate Serializable interface
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,44 +12,59 @@ import java.io.Serializable;
 //By implementing Serializable interface
 //we make sure that state of instances of class A
 //can be saved in a file.
-class MyClass implements Serializable{
-	int i;
-	String s;
-	MyRelatedClass rc;
+class Persona implements Serializable {
+	int eta;
+	String fullname;
+	Indirizzo indirizzo;
 
 	// A class constructor
-	public MyClass(int i, String s, MyRelatedClass rc) {
-		this.i = i;
-		this.s = s;
-		this.rc = rc;
+	public Persona(int eta, String fullname, Indirizzo indirizzo) {
+		this.eta = eta;
+		this.fullname = fullname;
+		this.indirizzo = indirizzo;
 	}
 }
 
-class MyRelatedClass implements Serializable{
-	String s;
+class Indirizzo implements Serializable {
+	String via;
 
-	public MyRelatedClass(String s) {
-		this.s = s;
+	public Indirizzo(String s) {
+		this.via = s;
 	}
 }
 
 public class SerializeClass {
-	public static void main(String[] args) throws CloneNotSupportedException, IOException, ClassNotFoundException {
-		MyClass a = new MyClass(20, "GeeksForGeeks", new MyRelatedClass("Juri"));
 
+	private static final String PATH = "example.txt";
+
+	public static void serialize(Persona p) {
 		// Serializing 'a'
-		FileOutputStream fos = new FileOutputStream("xyz.txt");
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(a);
+		try (FileOutputStream fos = new FileOutputStream(PATH);
+				ObjectOutputStream oos = new ObjectOutputStream(fos);){
+			oos.writeObject(p);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-		// De-serializing 'a'
-		FileInputStream fis = new FileInputStream("xyz.txt");
-		ObjectInputStream ois = new ObjectInputStream(fis);
-		MyClass b = (MyClass) ois.readObject();// down-casting object
+	public static Persona deserialize(String filename) {
+		Persona b = null;
+		try (FileInputStream fis = new FileInputStream(PATH);
+			ObjectInputStream ois = new ObjectInputStream(fis)){
+			b = (Persona) ois.readObject();
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
 
-		System.out.println(b.i + " " + b.s + " " + b.rc.s);
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
+		Persona a = new Persona(20, "Juri Di Rocco", new Indirizzo("Esempio"));
+		serialize(a);
+		Persona b = deserialize(PATH);
+		System.out.println(b.eta + " " + b.fullname + " " + b.indirizzo.via);
 
-		// closing streams
-		ois.close();
 	}
 }

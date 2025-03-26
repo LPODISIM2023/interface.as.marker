@@ -1,6 +1,6 @@
 package interfaces;
 
-class ClonableClass implements Cloneable {
+class ClonableClass implements Cloneable  {
 	int i;
 	String s;
 	RelatedClass rc;
@@ -20,7 +20,7 @@ class ClonableClass implements Cloneable {
 	}
 }
 
-class RelatedClass implements Cloneable {
+class RelatedClass implements Cloneable{
 	String s;
 
 	public RelatedClass(String s) {
@@ -34,7 +34,7 @@ class RelatedClass implements Cloneable {
 
 public class CloneClass {
 	public static void main(String[] args) throws CloneNotSupportedException {
-		ClonableClass a = new ClonableClass(20, "GeeksForGeeks", new RelatedClass("Juri"));
+		ClonableClass a = new ClonableClass(20, "GeeksForGeeks", new RelatedClass("pippo"));
 
 		// cloning 'a' and holding
 		// new cloned object reference in b
@@ -44,11 +44,10 @@ public class CloneClass {
 
 		System.out.println(b.i);
 		System.out.println(b.s);
-		System.out.println(b.rc.s);
 		System.out.println(b == a);
-		System.out.println(b.rc == a.rc);
-		System.out.println(b.rc.s);
-		System.out.println(a.rc.s);
+		
+		System.out.println(b.s);
+		System.out.println(a.s);
 	}
 
 }

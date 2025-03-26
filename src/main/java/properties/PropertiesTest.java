@@ -1,4 +1,4 @@
-package Properties;
+package properties;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,6 +11,7 @@ public class PropertiesTest {
 		System.out.println(System.getProperty("user.dir"));
 //		Properties pops = System.getProperties();
 
+		
 		//GESTIONE FILE 
 		try (FileInputStream fis = new 
 				FileInputStream("application.properties")){
@@ -25,7 +26,7 @@ public class PropertiesTest {
 			System.err.println(e.getMessage());
 		}
 //		
-//		//GESTIONE DIVERSA DEI FILE
+//		//GESTIONE DIVERSA DEI FILE LEGGERE FILE DENTRO IL PROGETTO
 		try (InputStream input = PropertiesTest.class.getClassLoader().
 				getResourceAsStream("application.properties")){
 			Properties props = new Properties();
